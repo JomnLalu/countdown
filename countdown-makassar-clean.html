@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Countdown</title>
+  <style>
+    html,body{height:100%;margin:0}
+    body{display:flex;align-items:center;justify-content:center;background:#0b1220;color:#eaf2ff;font-family:Arial,Helvetica,sans-serif;text-align:center;padding:24px}
+    h1{font-size:28px;margin:0 0 28px;line-height:1.05;max-width:900px}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;min-width:320px}
+    .seg{background:rgba(255,255,255,0.03);padding:16px;border-radius:10px}
+    .num{font-weight:900;font-size:48px}
+    .lbl{font-size:12px;color:#a6b4c6;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+    @media (max-width:640px){.grid{grid-template-columns:repeat(2,1fr)} .num{font-size:36px} h1{font-size:20px}}
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Time until you all get serperated and will never meet together again</h1>
+
+    <div class="grid" aria-live="polite">
+      <div class="seg"><div id="days" class="num">0</div><div class="lbl">Days</div></div>
+      <div class="seg"><div id="hours" class="num">00</div><div class="lbl">Hours</div></div>
+      <div class="seg"><div id="minutes" class="num">00</div><div class="lbl">Minutes</div></div>
+      <div class="seg"><div id="seconds" class="num">00</div><div class="lbl">Seconds</div></div>
+    </div>
+  </div>
+
+  <script>
+    // Fixed target: May 5, 2026 00:00 Makassar (UTC+08:00)
+    const target = new Date('2026-05-05T00:00:00+08:00');
+    const el = id => document.getElementById(id);
+    const daysEl = el('days'), hoursEl = el('hours'), minutesEl = el('minutes'), secondsEl = el('seconds');
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+
+    function update(){
+      const now = new Date();
+      const diff = target - now;
+      if (diff <= 0){
+        daysEl.textContent = '0'; hoursEl.textContent='00'; minutesEl.textContent='00'; secondsEl.textContent='00';
+        return;
+      }
+      const s = Math.floor(diff/1000);
+      const days = Math.floor(s / 86400);
+      const hours = Math.floor((s % 86400) / 3600);
+      const minutes = Math.floor((s % 3600) / 60);
+      const seconds = s % 60;
+      daysEl.textContent = days;
+      hoursEl.textContent = pad(hours);
+      minutesEl.textContent = pad(minutes);
+      secondsEl.textContent = pad(seconds);
+    }
+
+    update();
+    setInterval(update, 250);
+  </script>
+</body>
+</html>
